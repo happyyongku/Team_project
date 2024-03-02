@@ -1,0 +1,19 @@
+body {
+    background-color: black;
+    color: white;
+}
+#start-page {
+    text-align: center;
+    margin: 0 auto;
+
+}
+
+#main-page {
+    text-align: center;
+    display: none;
+}
+
+#result-page {
+    text-align: center;
+    display: none;
+}
