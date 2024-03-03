@@ -1,0 +1,136 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css");
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: inherit;
+    color: #fff;
+    font-family: 'Pretendard';
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #111;
+    width: 100%;
+    height: 100vh;
+}
+
+.personalTest_container {
+    display: flex;
+    width: 450px;
+    max-width: 90%;
+    min-height: 600px;
+}
+
+.content_container > h1 {
+    font-weight: 500;
+    font-size: 18px;
+    word-break: keep-all;
+    margin-bottom: 30px;
+}
+.content_container > h2 {
+    font-weight: 500;
+    font-size: 14px;
+    word-break: keep-all;
+    margin-bottom: 30px;
+}
+
+.intro_container img {
+    max-width: 200px;
+    margin-bottom: 20px;
+    position: relative;
+    right: 5px;
+}
+
+.test_container .answer_container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.content_container button {
+    display: block;
+    border: none;
+    background: rgb(145 116 83);
+    max-width: 250px;
+    padding: 0 20px;
+    width: 100%;
+    height: 40px;
+    font-size: 12px;
+    cursor: pointer;
+    -webkit-tap-highlight-color : rgba(0,0,0,0) !important;
+}
+
+.content_container button:active {
+    transform: scale(0.98);
+    background: rgb(112, 79, 41);
+}
+
+
+.test_container button + button {
+    margin-top: 10px;
+}
+
+.content_container {
+    display: none;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.content_container.active{
+    display: flex;
+}
+
+.point_text {
+    color: rgb(248, 193, 129);
+    font-weight: 600;
+}
+
+.result_infor {
+    max-height: 50vh;
+    overflow: auto;
+    margin: 30px 0;
+    padding-right: 10px;
+}
+
+.result_infor li {
+    position: relative;
+    font-size: 12px;
+    word-break: keep-all;
+    padding-left: 10px;
+}
+
+.result_infor li::marker {
+    display: none;
+}
+
+.result_infor li::before {
+    content: "•";
+    color: rgb(248, 193, 129);
+    position: absolute;
+    left: 0;
+    top: 0px;
+}
+
+.result_infor::-webkit-scrollbar {
+    width: 3px;
+}
+
+.result_infor::-webkit-scrollbar-thumb {
+    background: rgb(248, 193, 129);
+}
+
+.result_infor::-webkit-scrollbar-track {
+    background: transparent
+}
+
+.result_infor li + li {
+    margin-top: 10px;
+}
