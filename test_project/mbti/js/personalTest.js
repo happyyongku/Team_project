@@ -7,7 +7,7 @@ class PersonalTest {
             IE: [{ question: '나는 혼자있을때 더 편안함을 느낀다.', answer: { a:'그렇다', b: '아니다'} }],
             SN: [{ question: '나는 아무 생각도 안할 수 있다.', answer: { a: '그렇다', b: '아무 생각도 안하는 생각도 생각 아닌가?' } }],
             TF: [{ question: '누군가 나를 싫어하는 걸 알았을 때.', answer: { a: '어쩌라는건지', b: '왜 나를 싫어할까?' } }],
-            JP: [{ question: '당신의 방을 깨끗한가요?', answer: { a: '그렇다', b: '아니다' } }],
+            JP: [{ question: '청소를 자주 하나요?', answer: { a: '그렇다', b: '아니다' } }],
         }; // 질문 모음
         this.results = []; // 사용자가 선택한 답모음
         this.resultInfors = {
