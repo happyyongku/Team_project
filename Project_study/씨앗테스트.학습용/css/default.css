@@ -1,0 +1,12 @@
+/* 파일에 전체적으로 영향이 가는 css */
+body{
+    background-color: rgb(249, 239, 226);
+}
+
+/*  '*'은 css 선택자로 모든것에 적용됨  */
+*{
+    font-family: "Dongle", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}      
+

@@ -1,0 +1,21 @@
+/* 다음 페이지로 넘어갈떄 자연스럽게 넘어가는 애니메이션 */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to {opacity: 1;}
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to {opacity: 0;}
+}
+
+/* 크롬에 적용되는용 */
+@-webkit-keyframes fadeIn {
+  from { opacity: 0; }
+  to {opacity: 1;}
+}
+
+@-webkit-keyframes fadeOut {
+  from { opacity: 1; }
+  to {opacity: 0;}
+}

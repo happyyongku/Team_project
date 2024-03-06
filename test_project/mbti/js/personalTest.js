@@ -189,7 +189,7 @@ class PersonalTest {
             const resultInforTitleElement = this.container.querySelector('.result_infor_title');
             const resultInforElement = this.container.querySelector('.result_infor');
             const calcResult = this.calcResult();
-            
+
             const resultImagePath = './src/images/result_${calcResult.toLowerCase()}'.png;
             resultImage.src = resultImagePath;
         

@@ -1,0 +1,43 @@
+/* 사용자에게 안보이게 꺼두는 역할 */
+#qna{
+  display: none;
+}
+
+/* qBox 클래스 */
+.qBox{
+  /* background-color: white; */
+  text-align: center;
+  border-radius: 3px;
+  font-size: 30px;
+  width: 80%;
+}
+
+/* answerList 버튼 클래스 */
+.answerList{
+  background-color: white;
+  border-radius: 5px;
+  font-size: 20px;
+  display: block;  /* 한줄로 처리 */
+  width: 80%;
+  border: 0px;  
+}
+
+/* 선택 버튼이 조금 더 티나게 버튼 클릭될때 색 변하는 효과 */
+.answerList:hover, .answerList:focus{
+  background-color:rgb(49, 129, 68);
+  color: white;
+}
+
+.status{
+  height: 10px;
+  width: 80%;
+  background-color: white;
+  border-radius: 3px;
+}
+
+.statusBar{
+  height: 100%;
+  border-radius: 3px;
+  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#b4ddb4+0,83c783+0,83c783+0,83c783+1,008a00+2,008a00+24,008a00+37,008a00+70,005700+100,002400+100 */
+background: linear-gradient(to bottom,  #b4ddb4 0%,#83c783 0%,#83c783 0%,#83c783 1%,#008a00 2%,#008a00 24%,#008a00 37%,#008a00 70%,#005700 100%,#002400 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}

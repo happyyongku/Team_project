@@ -1,0 +1,8 @@
+/* main에만 영향을 주는 css */
+#main{
+    background-color: white;
+    width: 80%; /* 너비값 */
+    text-align: center;  /* 메인 글씨 가운데 정렬  */
+    border-radius: 10px;  /* 테두리 각 조절  */
+}
+
