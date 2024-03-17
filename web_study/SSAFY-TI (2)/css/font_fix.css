@@ -1,0 +1,15 @@
+.font_g {
+  font-family: "Public Pixel", sans-serif;
+}
+
+@font-face {
+  /* 애플산돌고딕 폰트 적용 */
+  font-family: "SDGothic";
+  src: url("../dalmoori-font/dalmoori.ttf") format("truetype");
+  font-weight: normal;
+} /* 이후 "SDGothic"으로 폰트 적용 가능 */
+
+.font_f {
+  /*이건 픽셀 폰트*/
+  font-family: "SDGothic", serif;
+}
