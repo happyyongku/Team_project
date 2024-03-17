@@ -27,4 +27,14 @@
     color: #FEE500;
 }
 */
-  
+.resultimg-block{
+    height: 70vh;
+}
+
+.result-image{
+    height: 50%;
+}
+
+.result-image img{
+    height: 100%;
+}

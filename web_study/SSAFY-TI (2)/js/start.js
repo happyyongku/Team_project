@@ -79,7 +79,7 @@ function goResult(){
     qna.style.display = "none";
     result.style.display = "block"
   }, 450)})
-  // calResult();
+  calResult();
   setResult();
 }
 
