@@ -1,7 +1,7 @@
 #result{
     display: none;
     background-color: whitesmoke;
-    width: 80%;
+    width: 70%;
     text-align: center;
     border-radius: 20px;
 }
@@ -36,5 +36,18 @@
 }
 
 .result-image img{
-    height: 100%;
+    max-height:100%;
+    border: solid 2px black;
+    border-radius: 20px;
+}
+
+.result-description{
+    border: solid 2px black;
+    border-radius: 20px;
+}
+
+@font-face {
+    font-family: "speed-font";
+    src: url('speed.ttf') format('truetype');
+    font-weight: bold;
 }

@@ -2,7 +2,7 @@ const start = document.querySelector("#start");
 const qna = document.querySelector("#qna");
 const result = document.querySelector("#result");
 const endPoint = 15;
-const select = []; /*버튼 선택할때마다 저장할 배열*/ 
+const select = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; /*버튼 선택할때마다 저장할 배열*/ 
 
 function calResult(){
   /*
