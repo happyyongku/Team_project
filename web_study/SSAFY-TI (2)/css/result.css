@@ -17,12 +17,13 @@
     width: 70%;
     text-align: center;
     border-radius: 20px;
+    min-width: 705px;
 }
 
 .resultname{
     font-size: 26px;
 }
-  
+
 .resultDesc{
     font-size: 20px;
 }
@@ -54,10 +55,9 @@
     border-radius: 20px;
 }
 
-/* .result-description{
-    border: solid 2px whitesmoke;
-    border-radius: 20px;
-} */
+.result-description{
+    min-width: 485px;
+}
 
 
 .result-title {
