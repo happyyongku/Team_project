@@ -1,13 +1,19 @@
 @font-face {
     font-family: "speed-font";
-    src: url("speed.ttf");
+    src: url("speed.ttf") format('woff2');
     font-weight: bold;
+}
+@font-face {
+    font-family: 'EF_MACHO';
+    src: url('EF_MACHO.ttf') format('woff2');
+    font-weight: bold;
+    font-style: normal;
 }
 
 /* 백그라운드 컬러 #15042C 예정 */
 #result{
     display: none;
-    background-color: whitesmoke;
+    background-color: #15042c48;
     width: 70%;
     text-align: center;
     border-radius: 20px;
@@ -44,16 +50,21 @@
 
 .result-image img{
     max-height:100%;
-    border: solid 2px black;
+    border: solid 2px whitesmoke;
     border-radius: 20px;
 }
 
-.result-description{
-    border: solid 2px black;
+/* .result-description{
+    border: solid 2px whitesmoke;
     border-radius: 20px;
-}
+} */
 
 
 .result-title {
-    font-family: 'speed-font';
+    font-family: 'EF_MACHO';
+}
+
+.sans-font{
+    font-family: "Noto+Sans+KR";
+    font-weight: bold;
 }
