@@ -1,3 +1,10 @@
+@font-face {
+    font-family: "speed-font";
+    src: url("speed.ttf");
+    font-weight: bold;
+}
+
+/* 백그라운드 컬러 #15042C 예정 */
 #result{
     display: none;
     background-color: whitesmoke;
@@ -46,8 +53,7 @@
     border-radius: 20px;
 }
 
-@font-face {
-    font-family: "speed-font";
-    src: url('speed.ttf') format('truetype');
-    font-weight: bold;
+
+.result-title {
+    font-family: 'speed-font';
 }
