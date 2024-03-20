@@ -18,14 +18,16 @@ img_neko = [
 
 neko = [[] for _ in range(10)]
 check = [[0]*8 for _ in range(10)]
+hold = None
+switch_list = []
 
 turn = 0
 map_y = 10
 map_x = 8
 display_width = 912
 display_height = 768
-bg =  pygame.image.load("neko_bg")
-cursor = pygame.image.load("neko_cursor")
+bg =  pygame.image.load("neko_bg.png")
+cursor = pygame.image.load("neko_cursor.png")
 
 for y in range(map_y):
     for x in range(map_x):
@@ -44,35 +46,70 @@ class Mouse :
         self.map_x = map_x
         
     def get_mouse(self):
+        global hold
         position = pygame.mouse.get_pos()  # (x, y)
-        click = pygame.mouse.get_pressed()  # [0, 1, 2]
+        click = pygame.mouse.get_pressed()  # [0, 1, 2]  왼쪽 가운데 오른쪽
         for y in range(map_y):
             for x in range(map_x):
                 if x*72+20 < position[0] < (x+1)*72+20 and y*72+20 < position[1] < (y+1)*72+20:
                     if self.turn == 0:
                         gameDisplay.blit(self.cursor, (x*72+20, y*72+20))
                         if click[0] :
-                            self.turn = 0
+                            self.turn = 1
                             check[y][x] = 1
+                            hold = (y, x)
                     else:
                         if (0 <= y-1 and check[y-1][x] == 1) or (y+1 < self.map_y and check[y+1][x] == 1) or (0 <= x-1 and check[y][x-1] == 1) or (x+1 < self.map_x and check[y][x+1] == 1) :
                             gameDisplay.blit(self.cursor, (x*72+20, y*72+20))
                             if click[0] :
                                 self.turn = 0
-                                switch_neko()
+                                switch_neko(y, x)
+                                print(position)
                             elif click[2] :
-                                pass  # 오른쪽 클릭 시 초기화, 잠겨 있는 이미지 변환
+                                # 오른쪽 클릭 시 초기화, 잠겨 있는 이미지 변환
+                                self.turn = 0
+                                
+                                pass
                                 
 
-def switch_neko():
+def switch_neko(y, x):
+    global hold
+    global switch_list
     # 두 고양이 위치를 서로 바꾸는 함수
-    pass
+    neko[hold[0]][hold[1]], neko[y][x] = neko[y][x], neko[hold[0]][hold[1]]
+    switch_list.append((hold[0], hold[1]))
+    switch_list.append((y, x))
+    hold = None
+    cursor_set()
 
 def check_neko():
     # 상하좌우 같은 고양이가 3개 이상되는지
     # 만약 되었다면 7로 바꿔주기
-    pass
-
+    delta = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+    
+    for i in range(2):
+        trigger = False
+        for d in delta:
+            y , x = switch_list[i]
+            temp_y, temp_x = y, x
+            cnt = 1
+            niku = []
+            while True:
+                nx = temp_x + d[1]
+                ny = temp_y + d[0]
+                if not (0 <= nx < map_x and 0 <= ny < map_y):
+                    break
+                if neko[ny][nx] == neko[y][x]:
+                    cnt += 1
+                    niku.append(())
+                    temp_y, temp_x = ny, nx
+                    
+                else:
+                    break
+            if cnt >= 3:
+                trigger = True
+            
+    
 def cursor_set():
     # 커서 초기화 시키기
     pass
@@ -81,7 +118,7 @@ def cursor_draw():
     for y in range(map_y):
         for x in range(map_x):
             if check[y][x] == 1:
-                gameDisplay.blit(cursor, x*72+20, y*72+20)
+                gameDisplay.blit(cursor, (x*72+20, y*72+20))
 
 def neko_draw():
     for y in range(map_y):
