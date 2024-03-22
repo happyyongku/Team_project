@@ -93,55 +93,55 @@ def check_neko():
     if not switch_list:
         return
     
-    for idx in range(2):
-        trigger = False
-        origin_i, origin_j = switch_list[idx]
-        cnt1 = 1
-        cnt2 = 1
-        for d1 in [(1, 0), (-1, 0)]:
-            i, j = origin_i, origin_j
-            while True:
-                ni = i + d1[0]
-                nj = j + d1[1]
-                if not (0 <= ni < map_y and 0 <= nj < map_x):
-                    break
-                if neko[ni][nj] == neko[origin_i][origin_j]:
-                    cnt1 += 1
-                    ready_to_switch.append((ni, nj))
-                    i, j = ni, nj
-                else:
-                    break
-        if cnt1 >= 3:
-            trigger = True
-            for idx in range(len(ready_to_switch)):
-                neko[ready_to_switch[idx][0]][ready_to_switch[idx][1]] = 7
-            ready_to_switch.clear()
-        else:
-            ready_to_switch.clear()
-        
-        for d2 in [(0, 1), (0, -1)]:
-            i, j = origin_i, origin_j
-            while True:
-                ni = i + d2[0]
-                nj = j + d2[1]
-                if not (0 <= ni < map_y and 0 <= nj < map_x):
-                    break
-                if neko[ni][nj] == neko[origin_i][origin_j]:
-                    cnt2 += 1
-                    ready_to_switch.append((ni, nj))
-                    i, j = ni, nj
-                else:
-                    break
-        if cnt2 >= 3:
-            trigger = True
-            for idx in range(len(ready_to_switch)):
-                neko[ready_to_switch[idx][0]][ready_to_switch[idx][1]] = 7
-            ready_to_switch.clear()
-        else:
-            ready_to_switch.clear()
-        
-        if trigger:
-            neko[origin_i][origin_j] = 7
+    for origin_i in range(map_y):
+        for origin_j in range(map_x):
+            trigger = False
+            cnt1 = 1
+            cnt2 = 1
+            for d1 in [(1, 0), (-1, 0)]:
+                i, j = origin_i, origin_j
+                while True:
+                    ni = i + d1[0]
+                    nj = j + d1[1]
+                    if not (0 <= ni < map_y and 0 <= nj < map_x):
+                        break
+                    if neko[ni][nj] == neko[origin_i][origin_j]:
+                        cnt1 += 1
+                        ready_to_switch.append((ni, nj))
+                        i, j = ni, nj
+                    else:
+                        break
+            if cnt1 >= 3:
+                trigger = True
+                for idx in range(len(ready_to_switch)):
+                    neko[ready_to_switch[idx][0]][ready_to_switch[idx][1]] = 7
+                ready_to_switch.clear()
+            else:
+                ready_to_switch.clear()
+            
+            for d2 in [(0, 1), (0, -1)]:
+                i, j = origin_i, origin_j
+                while True:
+                    ni = i + d2[0]
+                    nj = j + d2[1]
+                    if not (0 <= ni < map_y and 0 <= nj < map_x):
+                        break
+                    if neko[ni][nj] == neko[origin_i][origin_j]:
+                        cnt2 += 1
+                        ready_to_switch.append((ni, nj))
+                        i, j = ni, nj
+                    else:
+                        break
+            if cnt2 >= 3:
+                trigger = True
+                for idx in range(len(ready_to_switch)):
+                    neko[ready_to_switch[idx][0]][ready_to_switch[idx][1]] = 7
+                ready_to_switch.clear()
+            else:
+                ready_to_switch.clear()
+            
+            if trigger:
+                neko[origin_i][origin_j] = 7
     
         
             
