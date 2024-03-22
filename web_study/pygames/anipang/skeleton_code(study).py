@@ -64,12 +64,14 @@ class Mouse :
                             if click[0] :
                                 self.turn = 0
                                 switch_neko(y, x)
-                                print(position)
-                            elif click[2] :
-                                # 오른쪽 클릭 시 초기화, 잠겨 있는 이미지 변환
-                                self.turn = 0
-                                
-                                pass
+                                hold = None
+
+                        elif click[2] :
+                            # 오른쪽 클릭 시 초기화, 잠겨 있는 이미지 변환
+                            self.turn = 0
+                            cursor_set()
+                            hold = None
+                            
                                 
 
 def switch_neko(y, x):
@@ -79,40 +81,76 @@ def switch_neko(y, x):
     neko[hold[0]][hold[1]], neko[y][x] = neko[y][x], neko[hold[0]][hold[1]]
     switch_list.append((hold[0], hold[1]))
     switch_list.append((y, x))
-    hold = None
     cursor_set()
+    hold = None
+    
 
 def check_neko():
     # 상하좌우 같은 고양이가 3개 이상되는지
     # 만약 되었다면 7로 바꿔주기
-    delta = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+    ready_to_switch = []
+ 
+    if not switch_list:
+        return
     
-    for i in range(2):
+    for idx in range(2):
         trigger = False
-        for d in delta:
-            y , x = switch_list[i]
-            temp_y, temp_x = y, x
-            cnt = 1
-            niku = []
+        origin_i, origin_j = switch_list[idx]
+        cnt1 = 1
+        cnt2 = 1
+        for d1 in [(1, 0), (-1, 0)]:
+            i, j = origin_i, origin_j
             while True:
-                nx = temp_x + d[1]
-                ny = temp_y + d[0]
-                if not (0 <= nx < map_x and 0 <= ny < map_y):
+                ni = i + d1[0]
+                nj = j + d1[1]
+                if not (0 <= ni < map_y and 0 <= nj < map_x):
                     break
-                if neko[ny][nx] == neko[y][x]:
-                    cnt += 1
-                    niku.append(())
-                    temp_y, temp_x = ny, nx
-                    
+                if neko[ni][nj] == neko[origin_i][origin_j]:
+                    cnt1 += 1
+                    ready_to_switch.append((ni, nj))
+                    i, j = ni, nj
                 else:
                     break
-            if cnt >= 3:
-                trigger = True
+        if cnt1 >= 3:
+            trigger = True
+            for idx in range(len(ready_to_switch)):
+                neko[ready_to_switch[idx][0]][ready_to_switch[idx][1]] = 7
+            ready_to_switch.clear()
+        else:
+            ready_to_switch.clear()
+        
+        for d2 in [(0, 1), (0, -1)]:
+            i, j = origin_i, origin_j
+            while True:
+                ni = i + d2[0]
+                nj = j + d2[1]
+                if not (0 <= ni < map_y and 0 <= nj < map_x):
+                    break
+                if neko[ni][nj] == neko[origin_i][origin_j]:
+                    cnt2 += 1
+                    ready_to_switch.append((ni, nj))
+                    i, j = ni, nj
+                else:
+                    break
+        if cnt2 >= 3:
+            trigger = True
+            for idx in range(len(ready_to_switch)):
+                neko[ready_to_switch[idx][0]][ready_to_switch[idx][1]] = 7
+            ready_to_switch.clear()
+        else:
+            ready_to_switch.clear()
+        
+        if trigger:
+            neko[origin_i][origin_j] = 7
+    
+        
             
     
 def cursor_set():
     # 커서 초기화 시키기
-    pass
+    # cursor 배열 전부 0으로
+    if hold:
+        check[hold[0]][hold[1]] = 0
 
 def cursor_draw():
     for y in range(map_y):
@@ -132,7 +170,7 @@ def game(): # 메인 게임 함수
     # 게임 함수
     m = Mouse(cursor, map_y, map_x)
     
-    while True:
+    while True:  # 프레임마다 반복
         tmr += 1 # 매 시간 1초 증가
         for event in pygame.event.get(): # 윈도운 X 누를 시 나오게끔
             if event.type == pygame.QUIT:
