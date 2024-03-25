@@ -63,6 +63,8 @@ class Mouse :
                             if click[0] and neko[y][x] != 0:
                                 self.turn = 0
                                 switch_neko(y, x)
+                                if not check_neko():
+                                    switch_neko(y, x)
                                 hold = None
 
                         elif click[2] :
@@ -76,7 +78,6 @@ def switch_neko(y, x):
     # 두 고양이 위치를 서로 바꾸는 함수
     neko[hold[0]][hold[1]], neko[y][x] = neko[y][x], neko[hold[0]][hold[1]]
     cursor_set(y, x)
-    hold = None
     
 
 def check_neko():
@@ -130,15 +131,28 @@ def check_neko():
                     
             if trigger:
                 neko[i][j] = 7
-                    
+    if  trigger:
+        return True
+    else:
+        return False
+
+def drop_neko():
+    for i in range(map_y):
+        for j in range(map_x):
+            if i == 0:
+                if neko[i][j] == 0:
+                    neko[i][j] = random.choice(range(1, 7))
+            else:
+                if neko[i][j] == 0:
+                    neko[i][j], neko[i-1][j] = neko[i-1][j], neko[i][j]
                     
     
 def cursor_set(y, x):
     # 커서 초기화 시키기
     # cursor 배열 전부 0으로
-    if hold:
-        check[hold[0]][hold[1]] = 0
-        check[y][x] = 0
+    for i in range(map_y):
+        for j in range(map_x):
+            check[i][j] = 0
 
 def cursor_draw():
     for y in range(map_y):
@@ -171,6 +185,7 @@ def game(): # 메인 게임 함수
         m.get_mouse()
         cursor_draw()
         check_neko()
+        drop_neko()
         pygame.display.update()
         clock.tick(20)
         
