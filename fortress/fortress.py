@@ -13,6 +13,7 @@ cannon_body = pygame.image.load("./img/cannon-3.png")
 cannon_wheel = pygame.image.load("./img/cannon-1.png") # 24
 wheel = [100,300]
 body = [124, 324]
+
 def mainmenu():
     pygame.init()
     
