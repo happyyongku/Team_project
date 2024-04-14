@@ -9,4 +9,3 @@ import matplotlib.pyplot as plt
 x_list, y_list, t_list= coord(100, 45, 0, 0, 0)
 plt.plot(x_list, y_list)
 plt.show
-#%%

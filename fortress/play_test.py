@@ -6,8 +6,8 @@ import time
 WHITE = (255, 255, 255)
 RED = (255, 10, 10)
 BLACK = (0, 0, 0)
-display_width = 912
-display_height = 768
+display_width = 1280
+display_height = 720
 
 cannon_body = pygame.image.load("./img/cannon-3.png")
 cannon_wheel = pygame.image.load("./img/cannon-1.png") # 24
@@ -25,6 +25,7 @@ def mainmenu():
     angle = 0
     space = 0
     gauge = 0
+    turn = 1
     while menu:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

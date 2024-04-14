@@ -28,3 +28,55 @@ def coord(v_s, theta_s, v_w, theta_w, k):
         y.append(y_coord)
     
     return x, y
+
+def environ(turn):
+    '''
+    턴 수에 따라 계절 산출, 계절에 따른 풍속, 풍향, 저항, 데미지 배율 설정
+    '''
+    if 1 <= turn < 4:
+        season = 'spring'
+    elif 4 <= turn < 7:
+        season = 'summer'
+    elif 7 < turn < 10:
+        season = 'autumn'
+    else:
+        season = 'winter'
+    
+    if season == 'spring':
+        wind_velocity = list(range(10))
+        wind_angle = list(range(0, 190, 10))
+        resistance = 0
+        damage_scale = 1
+    elif season == 'summer':
+        wind_velocity = list(range(20))
+        wind_angle = list(range(0, 190, 10))
+        resistance = 0.2
+        damage_scale = 0.7
+    elif season == 'autumn':
+        wind_velocity = list(range(10))
+        wind_angle = list(range(0, 190, 10))
+        resistance = 0
+        damage_scale = 2
+    elif season == 'winter':
+        wind_velocity = list(range(20))
+        wind_angle = list(range(0, 190, 10))
+        resistance = 0.1
+        damage_scale = 1.2
+    
+    v_w = wind_velocity[np.random.randint(0, len(wind_velocity)-1)]
+    theta_w = wind_angle[np.random.randint(0, len(wind_angle)-1)]
+    
+    return v_w, theta_w, resistance, damage_scale
+
+def shot(angle, gauge):
+    global turn
+    v_s, theta_s = gauge, angle
+    v_w, theta_w, k, scale = environ(turn)
+    x_coord, y_coord = coord(v_s, theta_s, v_w, theta_w, k)
+    # 좌표에 따른 이미지 출력 부분
+    #
+    turn += 1
+    gauge = 0
+
+def calculation():
+    ...
