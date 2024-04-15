@@ -1,7 +1,7 @@
 import numpy as np
 import math
 
-def coord(v_s, theta_s, v_w, theta_w, k):
+def coord(v_s, theta_s, v_w, theta_w, k, init_x, init_y):
     '''
     v_s : 발사 속도 (파워)
     theta_s : 발사 각도
@@ -22,8 +22,8 @@ def coord(v_s, theta_s, v_w, theta_w, k):
     
     for i in range(len(t_list)):
         t = t_list[i]
-        x_coord = round(v_s * math.cos(a_s) * t + v_w * math.cos(a_w) * t, 2)
-        y_coord = round(v_s * math.sin(a_s) * t - (1/2)*g*(t**2) + v_w * math.sin(a_w) * t, 2)
+        x_coord = round(v_s * math.cos(a_s) * t + v_w * math.cos(a_w) * t, 2) + init_x
+        y_coord = round(v_s * math.sin(a_s) * t - (1/2)*g*(t**2) + v_w * math.sin(a_w) * t, 2) + init_y
         x.append(x_coord)
         y.append(y_coord)
     
@@ -78,5 +78,8 @@ def shot(angle, gauge):
     turn += 1
     gauge = 0
 
-def calculation():
-    ...
+# if idx -> -1
+def calculation(impact, player):
+    # player = Player(wheel, side)
+    if impact-player.volume <= player.position[0] <= impact+player.volume:
+        player.hit()

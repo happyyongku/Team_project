@@ -2,6 +2,8 @@ import pygame
 import sys
 import random
 import time
+from functions import coord, environ, shot, calculation
+from classes import Player
 
 WHITE = (255, 255, 255)
 RED = (255, 10, 10)
@@ -14,6 +16,8 @@ cannon_wheel = pygame.image.load("./img/cannon-1.png") # 24
 wheel = [100,300]
 body = [124, 324]
 
+player = Player(wheel, 1)
+turn = 1
 def mainmenu():
     pygame.init()
     
@@ -25,15 +29,13 @@ def mainmenu():
     angle = 0
     space = 0
     gauge = 0
-    turn = 1
     while menu:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
         keys = pygame.key.get_pressed()
-        
-        
+
         if keys[pygame.K_SPACE] :
             space += 5
             if space >= 100 :
@@ -41,18 +43,21 @@ def mainmenu():
         else :
             gauge = space
             if gauge != 0 :
-                shot(gauge,angle)
+                shot(angle, gauge)
             space = 0
         if keys[pygame.K_UP] and angle <= 90:
             angle += 1
         elif keys[pygame.K_DOWN] and angle >= 0:
             angle -= 1
         if keys[pygame.K_RIGHT]:
-            wheel[0] += 1
+            # wheel[0] += 1
             body[0] += 1
+            player.move(1, 0)
         elif keys[pygame.K_LEFT] :
-            wheel[0] -= 1
+            # wheel[0] -= 1
             body[0] -= 1
+            player.move(-1, 0)
+
         txt = font.render(str(space),True, BLACK)
         rotated_image = pygame.transform.rotate(cannon_body, angle)
         new_rect = rotated_image.get_rect(center=cannon_body.get_rect(center=body).center)
@@ -63,12 +68,22 @@ def mainmenu():
         gameDisplay.blit(txt,(0,0))
         pygame.display.update()
         clock.tick(20)
-        
-        
-def shot(guage, angle):
-    ...
 
+def shot(angle, gauge):
+    global turn # 1p 좌표, 2p 좌표 
+    v_s, theta_s = gauge, angle
+    init_pos = player.position
+    v_w, theta_w, k, scale = environ(turn)
+    x_coord, y_coord = coord(v_s, theta_s, v_w, theta_w, k, init_pos[0], init_pos[1])
+    # 좌표에 따른 이미지 출력 부분
+    
+    while idx < len(x_coord):
+        ...
+        # 발사
+        # 배경 -> 대포 -> 포탄 순으로 출력하면서 이전 포탄을 덮는 느낌으로 ㄱㄱ
         
+
+    turn += 1
         
 if __name__ == "__main__":
     mainmenu()
