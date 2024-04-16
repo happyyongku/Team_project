@@ -1,5 +1,6 @@
 import numpy as np
 import math
+from classes import Player
 
 def coord(v_s, theta_s, v_w, theta_w, k, init_x, init_y):
     '''
@@ -13,7 +14,7 @@ def coord(v_s, theta_s, v_w, theta_w, k, init_x, init_y):
     a_s = math.radians(theta_s)
     a_w = math.radians(theta_w)
     
-    t_end = round((2 * (v_s * math.sin(a_s) + v_w * math.sin(a_w)) / g) * (1 - k), 2)
+    t_end = round(2 * (v_s * math.sin(a_s) - v_w * math.sin(a_w)) / g, 2)
     
     x = []
     y = []
@@ -22,8 +23,8 @@ def coord(v_s, theta_s, v_w, theta_w, k, init_x, init_y):
     
     for i in range(len(t_list)):
         t = t_list[i]
-        x_coord = round(v_s * math.cos(a_s) * t + v_w * math.cos(a_w) * t, 2) + init_x
-        y_coord = round(v_s * math.sin(a_s) * t - (1/2)*g*(t**2) + v_w * math.sin(a_w) * t, 2) + init_y
+        x_coord = round((v_s * math.cos(a_s) * t + v_w * math.cos(a_w) * t) * (1-k), 2) + init_x
+        y_coord = -round((v_s * math.sin(a_s) * t - (1/2)*g*(t**2) - v_w * math.sin(a_w) * t), 2) + init_y
         x.append(x_coord)
         y.append(y_coord)
     
@@ -67,16 +68,6 @@ def environ(turn):
     theta_w = wind_angle[np.random.randint(0, len(wind_angle)-1)]
     
     return v_w, theta_w, resistance, damage_scale
-
-def shot(angle, gauge):
-    global turn
-    v_s, theta_s = gauge, angle
-    v_w, theta_w, k, scale = environ(turn)
-    x_coord, y_coord = coord(v_s, theta_s, v_w, theta_w, k)
-    # 좌표에 따른 이미지 출력 부분
-    #
-    turn += 1
-    gauge = 0
 
 # if idx -> -1
 def calculation(impact, player):
