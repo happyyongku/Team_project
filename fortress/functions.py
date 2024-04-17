@@ -1,6 +1,7 @@
 import numpy as np
 import math
 from classes import Player
+import pygame
 
 def coord(v_s, theta_s, v_w, theta_w, k, init_x, init_y):
     '''

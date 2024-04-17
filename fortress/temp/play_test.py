@@ -18,7 +18,7 @@ body = [124, 324]
 
 player = Player(wheel, 1)
 turn = 1
-def mainmenu():
+def game():
     pygame.init()
     
     font = pygame.font.Font(None, 80)
@@ -112,7 +112,7 @@ def shot(angle, gauge, gameDisplay, clock, player):
     turn += 1
         
 if __name__ == "__main__":
-    mainmenu()
+    game()
     
 
 
