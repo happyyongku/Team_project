@@ -28,7 +28,7 @@ class Player:
         self.position[1] += dy
         self.body[0] += dx
         self.body[1] += dy
-    def hit(self):
+    def hit(self, damage_scale):
         self.hp -= (self.damage * damage_scale)
     
     def angle_move(self, theta):
