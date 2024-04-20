@@ -11,7 +11,7 @@ def coord(v_s, theta_s, v_w, theta_w, k, init_x, init_y):
     theta_w : 풍향
     k : 저항값
     '''
-    g = 9.8
+    g = 8
     a_s = math.radians(theta_s)
     a_w = math.radians(theta_w)
     
@@ -35,14 +35,7 @@ def environ(turn):
     '''
     턴 수에 따라 계절 산출, 계절에 따른 풍속, 풍향, 저항, 데미지 배율 설정
     '''
-    if 1 <= turn < 4:
-        season = 'spring'
-    elif 4 <= turn < 7:
-        season = 'summer'
-    elif 7 < turn < 10:
-        season = 'autumn'
-    else:
-        season = 'winter'
+    season = seasonal(turn)
     
     if season == 'spring':
         wind_velocity = list(range(10))
@@ -75,3 +68,14 @@ def calculation(impact, player):
     # player = Player(wheel, side)
     if impact-player.volume <= player.position[0] <= impact+player.volume:
         player.hit()
+        
+def seasonal(turn):
+    if 1 <= turn < 4:
+        season = 'spring'
+    elif 4 <= turn < 7:
+        season = 'summer'
+    elif 7 <= turn < 10:
+        season = 'autumn'
+    else:
+        season = 'winter'
+    return season

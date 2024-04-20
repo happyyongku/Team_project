@@ -2,7 +2,7 @@ import pygame
 import sys
 import random
 import time
-from functions import coord, environ, calculation
+from functions import coord, environ, calculation, seasonal
 from classes import Player, Button
 
 pygame.init() # pygame 모듈 초기화
@@ -13,11 +13,12 @@ class Player:
     def __init__(self, initial_position, side):
         self.position = initial_position
         self.damage = 1
-        self.volume = 20
+        self.volume = 74
         self.side = side
         self.hp = 10
         self.gauge = 0
         self.body = [initial_position[0]+24, initial_position[1]+24]
+        self.moved = 0
         if side == 1:
             self.angle = 0
         elif side == 2:
@@ -28,6 +29,7 @@ class Player:
         self.position[1] += dy
         self.body[0] += dx
         self.body[1] += dy
+        self.moved += abs(dx)
     def hit(self, damage, scale):
         self.hp -= (damage * scale)
     
@@ -39,6 +41,9 @@ class Player:
 
     def charge(self, power):
         self.gauge += power
+    
+    def moved_init(self):
+        self.moved = 0
 
 class Button:  # 버튼
     def __init__(self, img_in, x, y, width, height, img_act, x_act, y_act, action=None):
@@ -181,13 +186,23 @@ def game(player1, player2):
     pygame.init()
     print(player1.position, player2.position)
     
+    summer_bg = pygame.image.load("./img/summer_bg.png")  # 여름 배경
     font = pygame.font.Font(None, 80)
     gameDisplay = pygame.display.set_mode((display_width, display_height))
     pygame.display.set_caption("대포 움직이기")
     clock = pygame.time.Clock()
     menu = True
     while menu:
-        print(player1.hp, player2.hp)
+        season = seasonal(turn)
+        if season == 'spring':
+            background = pygame.image.load("./img/spring_bg.png")
+        elif season == 'summer':
+            background = pygame.image.load("./img/summer_bg.png")
+        elif season == 'autumn':
+            background = pygame.image.load("./img/fall_bg.png")
+        elif season == 'winter':
+            background = pygame.image.load("./img/winter_bg.png")
+        
         if turn % 2 == 1:
             player = player1
         else:
@@ -218,9 +233,11 @@ def game(player1, player2):
             elif player.side == 2 and player.angle < 180:
                 player.angle_move(-1)
         if keys[pygame.K_RIGHT]:
-            player.move(1, 0)
+            if player.moved < 100:
+                player.move(5, 0)
         elif keys[pygame.K_LEFT] :
-            player.move(-1, 0)
+            if player.moved < 100:
+                player.move(-5, 0)
 
         txt = font.render(str(player.gauge),True, BLACK)
         if player.side == 1:
@@ -237,7 +254,7 @@ def game(player1, player2):
         rotated_image2 = pygame.transform.rotate(cannon_body2, player2.angle - 180)
         new_rect2 = rotated_image2.get_rect(center=cannon_body2.get_rect(center=player2.body).center)
 
-        gameDisplay.blit(summer_bg, (0, 0))  # 배경 이미지
+        gameDisplay.blit(background, (0, 0))  # 배경 이미지
 
         gameDisplay.blit(rotated_image1, new_rect1)  # 회전한 대포
         gameDisplay.blit(cannon_wheel,player1.position)  # 바퀴 이미지
@@ -258,7 +275,6 @@ def shot(player):
     global font
     global player1
     global player2
-    print('//////////////////////////////////////////////////////')
     v_s, theta_s = player.gauge, player.angle
     init_pos = player.position
     v_w, theta_w, k, scale = environ(turn)
@@ -270,6 +286,18 @@ def shot(player):
 
     gameDisplay = pygame.display.set_mode((display_width, display_height))
     clock = pygame.time.Clock()
+    gameDisplay.blit(background, (0, 0))
+    pygame.display.update()
+    
+    season = seasonal(turn)
+    if season == 'spring':
+        background = pygame.image.load("./img/spring_bg.png")
+    elif season == 'summer':
+        background = pygame.image.load("./img/summer_bg.png")
+    elif season == 'autumn':
+        background = pygame.image.load("./img/fall_bg.png")
+    elif season == 'winter':
+        background = pygame.image.load("./img/winter_bg.png")
 
     shell = pygame.image.load("./img/cannon-1.png")
     font = pygame.font.Font(None, 80)
@@ -284,6 +312,8 @@ def shot(player):
 
     rotated_image2 = pygame.transform.rotate(cannon_body2, player2.angle - 180)
     new_rect2 = rotated_image2.get_rect(center=cannon_body2.get_rect(center=player2.body).center)
+    
+    
 
     # 좌표에 따른 이미지 출력 부분
     idx = 0
@@ -291,7 +321,7 @@ def shot(player):
         # 발사
         # 배경 -> 대포 -> 포탄 순으로 출력하면서 이전 포탄을 덮는 느낌으로 ㄱㄱ
         
-        gameDisplay.fill(WHITE)  # 배경 이미지
+        gameDisplay.blit(background, (0, 0))  # 배경 이미지
         gameDisplay.blit(rotated_image1, new_rect1)  # 회전한 대포1
         gameDisplay.blit(cannon_wheel,player1.position)  # 바퀴 이미지
         gameDisplay.blit(rotated_image2, new_rect2)  # 회전한 대포2
@@ -311,6 +341,8 @@ def shot(player):
     
     calculate(player, impact, scale)
     turn += 1
+    player.moved_init()
+    
 
 def calculate(player, impact, scale):
     global player1
@@ -323,8 +355,7 @@ def calculate(player, impact, scale):
     
     if impact[0] - enemy.volume <= enemy.position[0] <= impact[0] + enemy.volume:
         enemy.hit(player.damage, scale)
-    
-    
+
 
 # 변수 영역 //////////////////////////////////////////////////
 
