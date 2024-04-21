@@ -251,10 +251,11 @@ def game(player1, player2):
         rotated_image1 = pygame.transform.rotate(cannon_body1, player1.angle)
         new_rect1 = rotated_image1.get_rect(center=cannon_body1.get_rect(center=player1.body).center)
 
-        rotated_image2 = pygame.transform.rotate(cannon_body2, player2.angle - 180)
+        rotated_image2 = pygame.transform.rotate(cannon_body2, player2.angle-180)
         new_rect2 = rotated_image2.get_rect(center=cannon_body2.get_rect(center=player2.body).center)
 
-        gameDisplay.blit(background, (0, 0))  # 배경 이미지
+        # gameDisplay.blit(background, (0, 0))  # 배경 이미지
+        gameDisplay.fill(WHITE)   # test 용
 
         gameDisplay.blit(rotated_image1, new_rect1)  # 회전한 대포
         gameDisplay.blit(cannon_wheel,player1.position)  # 바퀴 이미지
@@ -275,19 +276,16 @@ def shot(player):
     global font
     global player1
     global player2
-    v_s, theta_s = player.gauge, player.angle
-    init_pos = player.position
     v_w, theta_w, k, scale = environ(turn)
-    x_coord, y_coord = coord(v_s, theta_s, v_w, theta_w, k, init_pos[0], init_pos[1])
-    # print(f'x_coord : {len(x_coord)}')
-    # print(f'y_coord : {len(y_coord)}')
+    x_coord, y_coord = coord(player, v_w, theta_w, k)
+    
     txt_hp_1 = font.render(str(player1.hp), True, BLACK)
     txt_hp_2 = font.render(str(player2.hp), True, BLACK)
 
     gameDisplay = pygame.display.set_mode((display_width, display_height))
     clock = pygame.time.Clock()
-    gameDisplay.blit(background, (0, 0))
-    pygame.display.update()
+    print(f'position : {player.position}')
+    print(f'{x_coord[0], y_coord[0]}')
     
     season = seasonal(turn)
     if season == 'spring':
@@ -299,21 +297,36 @@ def shot(player):
     elif season == 'winter':
         background = pygame.image.load("./img/winter_bg.png")
 
-    shell = pygame.image.load("./img/cannon-1.png")
+    shell = pygame.image.load("./img/neko6.png")
     font = pygame.font.Font(None, 80)
     txt = font.render(str(player.gauge),True, BLACK)
     if player.side == 1:
         txt_angle = font.render(str(player.angle), True, BLACK)
     elif player.side == 2:
-        txt_angle = font.render(str(180 - player.angle), True, BLACK)
+        txt_angle = font.render(str(player.angle), True, BLACK)
 
     rotated_image1 = pygame.transform.rotate(cannon_body1, player1.angle)
     new_rect1 = rotated_image1.get_rect(center=cannon_body1.get_rect(center=player1.body).center)
 
-    rotated_image2 = pygame.transform.rotate(cannon_body2, player2.angle - 180)
+    rotated_image2 = pygame.transform.rotate(cannon_body2, player2.angle-180)
     new_rect2 = rotated_image2.get_rect(center=cannon_body2.get_rect(center=player2.body).center)
     
+    # 화면 끊김 방지
+    # gameDisplay.blit(background, (0, 0))  # 배경 이미지
+    gameDisplay.fill(WHITE)
     
+    gameDisplay.blit(rotated_image1, new_rect1)  # 회전한 대포1
+    gameDisplay.blit(cannon_wheel,player1.position)  # 바퀴 이미지
+    gameDisplay.blit(rotated_image2, new_rect2)  # 회전한 대포2
+    gameDisplay.blit(cannon_wheel,player2.position)  # 바퀴 이미지
+    
+    pygame.draw.rect(gameDisplay, RED, [player.body[0]-35, player.body[1]-150, player.gauge, 10])
+    gameDisplay.blit(txt,(0,0))
+    gameDisplay.blit(txt_angle, (150, 0))
+    gameDisplay.blit(txt_hp_1, (player1.body[0], player1.body[1]-250))
+    gameDisplay.blit(txt_hp_2, (player2.body[0], player2.body[1]-250))
+    
+    pygame.display.update()
 
     # 좌표에 따른 이미지 출력 부분
     idx = 0
@@ -321,14 +334,16 @@ def shot(player):
         # 발사
         # 배경 -> 대포 -> 포탄 순으로 출력하면서 이전 포탄을 덮는 느낌으로 ㄱㄱ
         
-        gameDisplay.blit(background, (0, 0))  # 배경 이미지
+        # gameDisplay.blit(background, (0, 0))  # 배경 이미지
+        gameDisplay.fill(WHITE)
+        
+        gameDisplay.blit(shell, (x_coord[idx], y_coord[idx]))
+        
         gameDisplay.blit(rotated_image1, new_rect1)  # 회전한 대포1
         gameDisplay.blit(cannon_wheel,player1.position)  # 바퀴 이미지
         gameDisplay.blit(rotated_image2, new_rect2)  # 회전한 대포2
         gameDisplay.blit(cannon_wheel,player2.position)  # 바퀴 이미지
 
-
-        gameDisplay.blit(shell, (x_coord[idx], y_coord[idx]))
         pygame.draw.rect(gameDisplay, RED, [player.body[0]-35, player.body[1]-150, player.gauge, 10])
         gameDisplay.blit(txt,(0,0))
         gameDisplay.blit(txt_angle, (150, 0))
