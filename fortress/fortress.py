@@ -12,10 +12,10 @@ class Player:
     
     def __init__(self, initial_position, side):
         self.position = initial_position
-        self.damage = 1
+        self.damage = 10
         self.volume = 74
         self.side = side
-        self.hp = 10
+        self.hp = 100
         self.gauge = 0
         self.body = [initial_position[0]+24, initial_position[1]+24]
         self.moved = 0
@@ -23,6 +23,7 @@ class Player:
             self.angle = 0
         elif side == 2:
             self.angle = 180
+        self.hp_img = [img_hp[0]]*5
 
     def move(self, dx, dy):
         self.position[0] += dx
@@ -31,7 +32,13 @@ class Player:
         self.body[1] += dy
         self.moved += abs(dx)
     def hit(self, damage, scale):
-        self.hp -= (damage * scale)
+        self.hp = round(self.hp - (damage * scale))
+        idx = self.hp // 20
+        if self.hp % 20 != 0:
+            self.hp_img[idx] = img_hp[5-(self.hp % 20)//6]
+        else:
+            self.hp_img[idx] = img_hp[6]
+
     
     def angle_move(self, theta):
         if self.side == 1:
@@ -194,6 +201,8 @@ def game(player1, player2):
     menu = True
     while menu:
         season = seasonal(turn)
+        print(f'player1 : {player1.hp}')
+        print(f'player2 : {player2.hp}')
         if season == 'spring':
             background = pygame.image.load("./img/spring_bg.png")
         elif season == 'summer':
@@ -240,10 +249,12 @@ def game(player1, player2):
                 player.move(-5, 0)
 
         txt = font.render(str(player.gauge),True, BLACK)
-        if player.side == 1:
-            txt_angle = font.render(str(player.angle), True, BLACK)
-        elif player.side == 2:
-            txt_angle = font.render(str(180 - player.angle), True, BLACK)
+        txt_angle_1 = font.render(str(player1.angle), True, BLACK)
+        txt_angle_2 = font.render(str(180 - player2.angle), True, BLACK)
+        # if player.side == 1:
+        #     txt_angle = font.render(str(player.angle), True, BLACK)
+        # elif player.side == 2:
+        #     txt_angle = font.render(str(180 - player.angle), True, BLACK)
             
         txt_hp_1 = font.render(str(player1.hp), True, BLACK)
         txt_hp_2 = font.render(str(player2.hp), True, BLACK)
@@ -254,8 +265,8 @@ def game(player1, player2):
         rotated_image2 = pygame.transform.rotate(cannon_body2, player2.angle-180)
         new_rect2 = rotated_image2.get_rect(center=cannon_body2.get_rect(center=player2.body).center)
 
-        # gameDisplay.blit(background, (0, 0))  # 배경 이미지
-        gameDisplay.fill(WHITE)   # test 용
+        gameDisplay.blit(background, (0, 0))  # 배경 이미지
+        # gameDisplay.fill(WHITE)   # test 용
 
         gameDisplay.blit(rotated_image1, new_rect1)  # 회전한 대포
         gameDisplay.blit(cannon_wheel,player1.position)  # 바퀴 이미지
@@ -265,9 +276,14 @@ def game(player1, player2):
 
         pygame.draw.rect(gameDisplay, RED, [player.body[0]-35, player.body[1]-150, player.gauge, 10])
         gameDisplay.blit(txt,(0,0))
-        gameDisplay.blit(txt_angle, (150, 0))
-        gameDisplay.blit(txt_hp_1, (player1.body[0], player1.body[1]-250))
-        gameDisplay.blit(txt_hp_2, (player2.body[0], player2.body[1]-250))
+        # gameDisplay.blit(txt_angle, (150, 0))
+        gameDisplay.blit(txt_angle_1, (player1.body[0], player1.body[1]-250))
+
+        for i in range(len(player1.hp_img)):
+            gameDisplay.blit(player1.hp_img[i], (50* (i+1), 250))
+
+        gameDisplay.blit(txt_angle_2, (player2.body[0], player2.body[1]-250))
+
         pygame.display.update()
         clock.tick(20)
 
@@ -303,7 +319,7 @@ def shot(player):
     if player.side == 1:
         txt_angle = font.render(str(player.angle), True, BLACK)
     elif player.side == 2:
-        txt_angle = font.render(str(player.angle), True, BLACK)
+        txt_angle = font.render(str(180-player.angle), True, BLACK)
 
     rotated_image1 = pygame.transform.rotate(cannon_body1, player1.angle)
     new_rect1 = rotated_image1.get_rect(center=cannon_body1.get_rect(center=player1.body).center)
@@ -312,8 +328,8 @@ def shot(player):
     new_rect2 = rotated_image2.get_rect(center=cannon_body2.get_rect(center=player2.body).center)
     
     # 화면 끊김 방지
-    # gameDisplay.blit(background, (0, 0))  # 배경 이미지
-    gameDisplay.fill(WHITE)
+    gameDisplay.blit(background, (0, 0))  # 배경 이미지
+    # gameDisplay.fill(WHITE)
     
     gameDisplay.blit(rotated_image1, new_rect1)  # 회전한 대포1
     gameDisplay.blit(cannon_wheel,player1.position)  # 바퀴 이미지
@@ -334,8 +350,8 @@ def shot(player):
         # 발사
         # 배경 -> 대포 -> 포탄 순으로 출력하면서 이전 포탄을 덮는 느낌으로 ㄱㄱ
         
-        # gameDisplay.blit(background, (0, 0))  # 배경 이미지
-        gameDisplay.fill(WHITE)
+        gameDisplay.blit(background, (0, 0))  # 배경 이미지
+        # gameDisplay.fill(WHITE)
         
         gameDisplay.blit(shell, (x_coord[idx], y_coord[idx]))
         
@@ -351,7 +367,7 @@ def shot(player):
         gameDisplay.blit(txt_hp_2, (player2.body[0], player2.body[1]-250))
         pygame.display.update()
         idx += 1
-        clock.tick(120)
+        clock.tick(200)
     impact = (x_coord[idx-1], y_coord[idx-1])
     
     calculate(player, impact, scale)
@@ -410,6 +426,16 @@ pygame.display.set_icon(new_icon)
 
 display_width = 1280
 display_height = 720
+img_hp = [
+    pygame.transform.scale(pygame.image.load("./hp_img/hp_6.png"), (50, 50)),
+    pygame.transform.scale(pygame.image.load("./hp_img/hp_5.png"), (50, 50)),
+    pygame.transform.scale(pygame.image.load("./hp_img/hp_4.png"), (50, 50)),
+    pygame.transform.scale(pygame.image.load("./hp_img/hp_3.png"), (50, 50)),
+    pygame.transform.scale(pygame.image.load("./hp_img/hp_2.png"), (50, 50)),
+    pygame.transform.scale(pygame.image.load("./hp_img/hp_1.png"), (50, 50)),
+    pygame.transform.scale(pygame.image.load("./hp_img/hp_0.png"), (50, 50)),
+]
+
 
 
 gameDisplay = pygame.display.set_mode((display_width, display_height)) #스크린 초기화
