@@ -169,7 +169,6 @@ def select2():
 
 # 게임이 끝났다면
 def game_over(winner):
-    global cur_idx, next_level
     game_over = True
     bg_main = [pygame.image.load(f"./ending_img/{i}.png") for i in range(147)]
     # 화면에 맞게 이미지 크기 조정
@@ -182,13 +181,14 @@ def game_over(winner):
                 pygame.quit()
                 sys.exit()
         
-        cur_idx = (cur_idx + 1) % len(bg_main)
+        display_idx = cur_idx % len(bg_main)
         time.sleep(0.1)
-        next_level += 500  # 3초 추가
-        gameDisplay.blit(bg_main[cur_idx], (0, 0))
+        # next_level += 500  # 3초 추가
+        gameDisplay.blit(bg_main[display_idx], (0, 0))
         gameDisplay.blit(txt_1,[40,450])
         Button(mainmenu_start, 300, 600, 150, 80, mainmenu_start_click, 210, 535, intro)
         pygame.display.update() # 화면 업데이트
+        cur_idx += 1
         clock.tick(15) #프레임 레이트 지정
 
 # 게임 실행 함수
@@ -277,6 +277,9 @@ def game(player1, player2):
         gameDisplay.blit(txt_angle_1, (player1.body[0]-10, player1.body[1]-180))
         gameDisplay.blit(txt_angle_2, (player2.body[0]-10, player2.body[1]-180))
 
+        gameDisplay.blit(character1, (player1.position[0]-100, player1.position[1]-100))
+        gameDisplay.blit(character2, player2.position)
+
         # 체력 이미지 출력 파트
         temp_1 = (player1.hp-1)//20
         for i in range(5):
@@ -323,9 +326,11 @@ def game(player1, player2):
                     gameDisplay.blit(img_hp[5], (pos_x, 100))
 
         if winner:
-            game_over(winner)
+            break
         pygame.display.update()
         clock.tick(20)
+
+    game_over(winner)
 
 # 발사 이미지 출력 함수
 def shot(player):
@@ -365,23 +370,6 @@ def shot(player):
 
     rotated_image2 = pygame.transform.rotate(cannon_body2, player2.angle-180)
     new_rect2 = rotated_image2.get_rect(center=cannon_body2.get_rect(center=player2.body).center)
-    
-    # # 화면 끊김 방지
-    # gameDisplay.blit(background, (0, 0))  # 배경 이미지
-    # # gameDisplay.fill(WHITE)
-    
-    # gameDisplay.blit(rotated_image1, new_rect1)  # 회전한 대포1
-    # gameDisplay.blit(cannon_wheel,player1.position)  # 바퀴 이미지
-    # gameDisplay.blit(rotated_image2, new_rect2)  # 회전한 대포2
-    # gameDisplay.blit(cannon_wheel,player2.position)  # 바퀴 이미지
-    
-    # pygame.draw.rect(gameDisplay, RED, [player.body[0]-35, player.body[1]-150, player.gauge, 10])
-    # gameDisplay.blit(txt,(0,0))
-    # gameDisplay.blit(txt_angle, (150, 0))
-    # gameDisplay.blit(txt_hp_1, (player1.body[0], player1.body[1]-250))
-    # gameDisplay.blit(txt_hp_2, (player2.body[0], player2.body[1]-250))
-    
-    # pygame.display.update()
 
     # 좌표에 따른 이미지 출력 부분
     idx = 0
@@ -407,7 +395,6 @@ def shot(player):
         # 체력 이미지 출력 파트
         temp_1 = (player1.hp-1)//20
         for i in range(5):
-            # gameDisplay.blit(player11.hp_img[i], (50* (i+1), 250))
             pos_x = 60 * (i+1)
             if i < temp_1:
                 gameDisplay.blit(img_hp[0], (pos_x, 100))
@@ -429,7 +416,6 @@ def shot(player):
         
         temp_2 = (player2.hp-1)//20
         for i in range(5):
-            # gameDisplay.blit(player21.hp_img[i], (50* (i+1), 250))
             pos_x = 1220 - 60*(i+1)
             if i < temp_2:
                 gameDisplay.blit(img_hp[0], (pos_x, 100))
@@ -492,6 +478,8 @@ back = pygame.image.load("./img/back.png")
 back_click = pygame.image.load("./img/back_click.png")
 font = pygame.font.Font(None,80)
 font_1 = pygame.font.Font(None,100)
+character1 = pygame.image.load("./img/character0.png")
+character2 = pygame.image.load("./img/character1.png")
 
 # 계절 이미지 변수
 summer_bg = pygame.image.load("./img/summer_bg.png")
