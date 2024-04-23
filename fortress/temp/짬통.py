@@ -1,4 +1,12 @@
 import math
 
-r_sq = 74**2 + 28**2
-print(round(math.sqrt(74**2 / r_sq), 3))
+class AA:
+    def __init__(self):
+        self.A = 5
+        self.plus()
+    
+    def plus(self):
+        self.A += 1
+
+temp = AA()
+print(temp.A)
