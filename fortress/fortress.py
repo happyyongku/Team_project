@@ -14,7 +14,7 @@ class Player:
     def __init__(self, initial_position, side):
         self.position = initial_position
         self.name = 'player' + str(side)
-        self.damage = 100
+        self.damage = 10
         self.volume = 200  #74
         self.side = side
         self.hp = 100
@@ -70,22 +70,22 @@ class Environment:
         self.element(self.season)
     def element(self, season):
         if season == 'spring':
-            wind_velocity = list(range(10))
+            wind_velocity = list(range(11))
             wind_angle = list(range(0, 190, 10))
             self.resistance = 0
             self.damage_scale = 1
         elif season == 'summer':
-            wind_velocity = list(range(20))
+            wind_velocity = list(range(21))
             wind_angle = list(range(0, 190, 10))
             self.resistance = 0.2
             self.damage_scale = 0.7
         elif season == 'autumn':
-            wind_velocity = list(range(10))
+            wind_velocity = list(range(11))
             wind_angle = list(range(0, 190, 10))
             self.resistance = 0
             self.damage_scale = 2
         elif season == 'winter':
-            wind_velocity = list(range(20))
+            wind_velocity = list(range(21))
             wind_angle = list(range(0, 190, 10))
             self.resistance = 0.1
             self.damage_scale = 1.2
