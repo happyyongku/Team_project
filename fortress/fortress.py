@@ -447,16 +447,6 @@ def shot(player):
     txt_angle_2 = font.render(str(180 - player2.angle), True, BLACK)
     txt_velocity = font.render(f'{environment.v_w}m/s', True, BLACK)
     velocity_rect = txt_velocity.get_rect(center = (640, 180))
-<<<<<<< HEAD
-
-=======
-    
-    gameDisplay = pygame.display.set_mode((display_width, display_height))
-    clock = pygame.time.Clock()
-    print(f'position : {player.position}')
-    print(f'{x_coord[0], y_coord[0]}')
-    
->>>>>>> 7623ce48f3ef3ae07b5ea89c6397e729c96c3c2b
     # 배경이미지
     season = seasonal(turn)
     if season == 'spring':
@@ -562,7 +552,6 @@ def shot(player):
         pygame.display.update()
         idx += 1
         clock.tick(200)
-<<<<<<< HEAD
     
     # 마지막 x 좌표와 y 좌표가 impact
     impact = (x_coord[idx-1], y_coord[idx-1])
@@ -571,12 +560,6 @@ def shot(player):
     print(f'impact : {impact}')
 
     
-=======
-    
-    # 마지막 x 좌표와 y 좌표가 impact
-    impact = (x_coord[idx-1], y_coord[idx-1])
-    
->>>>>>> 7623ce48f3ef3ae07b5ea89c6397e729c96c3c2b
     # 현재 플레이어와 impact, 계절의 데미지 스케일로 피격 판정
     calculate(player, impact, scale)
     
@@ -635,15 +618,9 @@ character2 = pygame.transform.scale(pygame.image.load("./img/character1.png"), (
 # 계절 이미지 변수
 summer_bg = pygame.image.load("./img/summer_bg.png")
 
-<<<<<<< HEAD
 cannon_body1 = pygame.transform.scale(pygame.image.load("./img/cannon-3.png"), (94, 120))
 cannon_body2 = pygame.transform.scale(pygame.image.load("./img/cannon-4.png"), (94, 120))
 cannon_wheel = pygame.transform.scale(pygame.image.load("./img/cannon-1.png"), (39,39)) # 24
-=======
-cannon_body1 = pygame.transform.scale(pygame.image.load("./img/cannon-3.png"), (118, 150))
-cannon_body2 = pygame.transform.scale(pygame.image.load("./img/cannon-4.png"), (118, 150))
-cannon_wheel = pygame.image.load("./img/cannon-1.png") # 24
->>>>>>> 7623ce48f3ef3ae07b5ea89c6397e729c96c3c2b
 bomb = pygame.image.load("./img/heart_bomb.png")
 # wheel = [100,300]
 body = [124, 324]
