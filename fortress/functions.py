@@ -94,9 +94,9 @@ def calculation(impact, player):
         player.hit()
         
 def seasonal(turn):
-    if 1 <= turn < 4:
+    if 1 <= turn < 5:
         season = 'spring'
-    elif 4 <= turn < 7:
+    elif 5 <= turn < 8:
         season = 'summer'
     elif 7 <= turn < 10:
         season = 'autumn'
