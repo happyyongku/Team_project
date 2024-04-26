@@ -167,11 +167,7 @@ def intro():
     p2_button_click = pygame.image.load("./img/player2_click.png")
     back = pygame.image.load("./img/back.png")
     back_click = pygame.image.load("./img/back_click.png")
-
-    font = pygame.font.Font(None,60)
-    font_1 = pygame.font.Font(None,100)
-    korean_font = pygame.font.Font("./font/malgun.ttf", 30)
-
+    
     wind_direction = pygame.transform.scale(pygame.image.load("./img/arrow2.png"), (100, 100))
 
     character1 = pygame.transform.scale(pygame.image.load("./img/character0.png"), (170, 170))
@@ -188,20 +184,8 @@ def intro():
     body = [124, 324]
 
     shell = pygame.image.load("./img/heart_bomb.png")
-
-    player1 = None
-    player2 = None
-    win = None
-    defeated = None
-    environment = None
-    turn = 1
-
-    # 새로운 아이콘 이미지 로드
+    
     new_icon = pygame.image.load("./img/heart_icon.png")
-    pygame.display.set_icon(new_icon)
-
-    display_width = 1280
-    display_height = 720
     img_hp = [
         pygame.transform.scale(pygame.image.load("./hp_img/hp_6.png"), (50, 50)),
         pygame.transform.scale(pygame.image.load("./hp_img/hp_5.png"), (50, 50)),
@@ -211,33 +195,20 @@ def intro():
         pygame.transform.scale(pygame.image.load("./hp_img/hp_1.png"), (50, 50)),
         pygame.transform.scale(pygame.image.load("./hp_img/hp_0.png"), (50, 50)),
     ][::-1]
-
-
-
-    gameDisplay = pygame.display.set_mode((display_width, display_height)) #스크린 초기화
-    pygame.display.set_caption("LOVE BOMB")  # 타이틀
-    clock = pygame.time.Clock() #Clock 오브젝트 초기화
-
+    
     bg_explain = pygame.image.load("./img/explain_bg.png")
     bg_tip = pygame.image.load("./img/intro_game_tip.png")
     bg = pygame.image.load("./img/neko_bg.png")
     bg_ready = pygame.image.load("./img/ready_bg.png")
     cursor =pygame.image.load("./img/neko_cursor.png")
     ending_bg = pygame.image.load("./img/game_over_result.png")
-
-    ending_rect = ending_bg.get_rect(center = (640, 360))
-
+    
     right_button = pygame.image.load("./img/intro_right_button.png")
     left_button = pygame.image.load("./img/intro_left_button.png")
 
     regame_button = pygame.image.load("./img/regame.png")
     regame_button_click = pygame.image.load("./img/regame_click.png")
-
-    player1, player2, win, defeated, environment = None, None, None, None, None
     
-    turn = 1
-    clock = pygame.time.Clock()
-    tmr = 0
     bg_main = [
         pygame.image.load("./img/main_page1.png"),
         pygame.image.load("./img/main_page2.png"),
@@ -650,6 +621,95 @@ def handle_client(client_socket, _):
         ... # 값들이 결과가 나온 값들을 다시 클라이언트들한테 HP 전달, 승패 전달
             # tri_ready = 1 
 # 실행 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+mainmenu_start = pygame.image.load("./img/start.png")
+mainmenu_start_click = pygame.image.load("./img/start_click.png")
+explain_back = pygame.image.load("./img/explain.png")
+explain_back_click = pygame.image.load("./img/explain_click.png")
+p1_button = pygame.image.load("./img/player1.png")
+p1_button_click = pygame.image.load("./img/player1_click.png")
+p2_button = pygame.image.load("./img/player2.png")
+p2_button_click = pygame.image.load("./img/player2_click.png")
+back = pygame.image.load("./img/back.png")
+back_click = pygame.image.load("./img/back_click.png")
+
+font = pygame.font.Font(None,60)
+font_1 = pygame.font.Font(None,100)
+korean_font = pygame.font.Font("./font/malgun.ttf", 30)
+
+wind_direction = pygame.transform.scale(pygame.image.load("./img/arrow2.png"), (100, 100))
+
+character1 = pygame.transform.scale(pygame.image.load("./img/character0.png"), (170, 170))
+character2 = pygame.transform.scale(pygame.image.load("./img/character1.png"), (170, 170))
+
+# 계절 이미지 변수
+summer_bg = pygame.image.load("./img/summer_bg.png")
+
+cannon_body1 = pygame.transform.scale(pygame.image.load("./img/cannon-3.png"), (94, 120))
+cannon_body2 = pygame.transform.scale(pygame.image.load("./img/cannon-4.png"), (94, 120))
+cannon_wheel = pygame.transform.scale(pygame.image.load("./img/cannon-1.png"), (39,39)) # 24
+bomb = pygame.image.load("./img/heart_bomb.png")
+# wheel = [100,300]
+body = [124, 324]
+
+shell = pygame.image.load("./img/heart_bomb.png")
+
+player1 = None
+player2 = None
+win = None
+defeated = None
+environment = None
+turn = 1
+
+# 새로운 아이콘 이미지 로드
+new_icon = pygame.image.load("./img/heart_icon.png")
+pygame.display.set_icon(new_icon)
+
+display_width = 1280
+display_height = 720
+img_hp = [
+    pygame.transform.scale(pygame.image.load("./hp_img/hp_6.png"), (50, 50)),
+    pygame.transform.scale(pygame.image.load("./hp_img/hp_5.png"), (50, 50)),
+    pygame.transform.scale(pygame.image.load("./hp_img/hp_4.png"), (50, 50)),
+    pygame.transform.scale(pygame.image.load("./hp_img/hp_3.png"), (50, 50)),
+    pygame.transform.scale(pygame.image.load("./hp_img/hp_2.png"), (50, 50)),
+    pygame.transform.scale(pygame.image.load("./hp_img/hp_1.png"), (50, 50)),
+    pygame.transform.scale(pygame.image.load("./hp_img/hp_0.png"), (50, 50)),
+][::-1]
+
+
+
+gameDisplay = pygame.display.set_mode((display_width, display_height)) #스크린 초기화
+pygame.display.set_caption("LOVE BOMB")  # 타이틀
+clock = pygame.time.Clock() #Clock 오브젝트 초기화
+
+bg_explain = pygame.image.load("./img/explain_bg.png")
+bg_tip = pygame.image.load("./img/intro_game_tip.png")
+bg = pygame.image.load("./img/neko_bg.png")
+bg_ready = pygame.image.load("./img/ready_bg.png")
+cursor =pygame.image.load("./img/neko_cursor.png")
+ending_bg = pygame.image.load("./img/game_over_result.png")
+
+ending_rect = ending_bg.get_rect(center = (640, 360))
+
+right_button = pygame.image.load("./img/intro_right_button.png")
+left_button = pygame.image.load("./img/intro_left_button.png")
+
+regame_button = pygame.image.load("./img/regame.png")
+regame_button_click = pygame.image.load("./img/regame_click.png")
+
+player1, player2, win, defeated, environment = None, None, None, None, None
+
+turn = 1
+clock = pygame.time.Clock()
+tmr = 0
+bg_main = [
+    pygame.image.load("./img/main_page1.png"),
+    pygame.image.load("./img/main_page2.png"),
+    pygame.image.load("./img/main_page3.png"),
+    pygame.image.load("./img/main_page4.png")
+]
+    
 
 if __name__ == "__main__":
     intro()
