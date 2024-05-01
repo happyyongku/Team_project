@@ -2,6 +2,7 @@ import pygame
 import sys
 import random
 import time
+import json
 import numpy as np
 from functions import coord, environ, calculation, seasonal
 from classes import Player, Button
@@ -9,6 +10,7 @@ from threading import Thread
 import pickle
 from _thread import *
 import socket
+pygame.init()
 
 HOST = '127.0.0.1'  # 호스트
 PORT = 1111        # 포트
@@ -20,10 +22,11 @@ info_settings = [[[1100, 550], 2], [[100, 550], 1]]
 class Player:
     
     def __init__(self, initial_position, side):
+        self.initial_position = initial_position[:]
         self.position = initial_position
         self.name = 'player' + str(side)
         self.damage = 10
-        self.volume = 200  #74
+        self.volume = 100  #74
         self.side = side
         self.hp = 100
         self.gauge = 0
@@ -59,9 +62,6 @@ class Player:
 
     def charge(self, power):
         self.gauge += power
-    
-    def moved_init(self):
-        self.moved = 0
 
 # 환경 클래스
 class Environment:
@@ -167,7 +167,11 @@ def intro():
     p2_button_click = pygame.image.load("./img/player2_click.png")
     back = pygame.image.load("./img/back.png")
     back_click = pygame.image.load("./img/back_click.png")
-    
+
+    font = pygame.font.Font(None,60)
+    font_1 = pygame.font.Font(None,100)
+    korean_font = pygame.font.Font("./font/malgun.ttf", 30)
+
     wind_direction = pygame.transform.scale(pygame.image.load("./img/arrow2.png"), (100, 100))
 
     character1 = pygame.transform.scale(pygame.image.load("./img/character0.png"), (170, 170))
@@ -184,8 +188,11 @@ def intro():
     body = [124, 324]
 
     shell = pygame.image.load("./img/heart_bomb.png")
-    
     new_icon = pygame.image.load("./img/heart_icon.png")
+    pygame.display.set_icon(new_icon)
+
+    display_width = 1280
+    display_height = 720
     img_hp = [
         pygame.transform.scale(pygame.image.load("./hp_img/hp_6.png"), (50, 50)),
         pygame.transform.scale(pygame.image.load("./hp_img/hp_5.png"), (50, 50)),
@@ -195,33 +202,35 @@ def intro():
         pygame.transform.scale(pygame.image.load("./hp_img/hp_1.png"), (50, 50)),
         pygame.transform.scale(pygame.image.load("./hp_img/hp_0.png"), (50, 50)),
     ][::-1]
-    
     bg_explain = pygame.image.load("./img/explain_bg.png")
     bg_tip = pygame.image.load("./img/intro_game_tip.png")
     bg = pygame.image.load("./img/neko_bg.png")
     bg_ready = pygame.image.load("./img/ready_bg.png")
     cursor =pygame.image.load("./img/neko_cursor.png")
     ending_bg = pygame.image.load("./img/game_over_result.png")
-    
+
+    ending_rect = ending_bg.get_rect(center = (640, 360))
+
     right_button = pygame.image.load("./img/intro_right_button.png")
     left_button = pygame.image.load("./img/intro_left_button.png")
 
     regame_button = pygame.image.load("./img/regame.png")
     regame_button_click = pygame.image.load("./img/regame_click.png")
-    
     bg_main = [
         pygame.image.load("./img/main_page1.png"),
         pygame.image.load("./img/main_page2.png"),
         pygame.image.load("./img/main_page3.png"),
         pygame.image.load("./img/main_page4.png")
     ]
+    
     # Thread 활용 클라이언트와 화면 송출 따로 분리
     hd_client = Thread(target=client)
     hd_client.start()
+    tmr = 0
     
     menu = True
     while menu:
-        tmr = tmr + 1
+        tmr += 1
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -251,6 +260,10 @@ def ready():
     tri_ready = 1
     player1 = Player([100, 550], 1)
     player2 = Player([1100, 550], 2)
+    
+    send_initial_data(client_sockets[0], player1)
+    send_initial_data(client_sockets[1], player2)
+    
     game(player1, player2)
     
 
@@ -302,8 +315,9 @@ def game_over(win, defeated):
 
 # 게임 실행 함수
 def game(player1, player2):
-    global turn, environment
+    global turn, environment, tri_ready
     print(player1.position, player2.position)
+    print()
     
     # 시작하고 초기 환경 설정
     environment = Environment()
@@ -349,7 +363,6 @@ def game(player1, player2):
         
 
         gameDisplay.blit(background, (0, 0))  # 배경 이미지
-        # gameDisplay.fill(WHITE)   # test 용
         
         gameDisplay.blit(character1, (player1.position[0]-100, player1.position[1]-80))
         gameDisplay.blit(character2, (player2.position[0]-20, player2.position[1]-80))
@@ -361,10 +374,6 @@ def game(player1, player2):
         gameDisplay.blit(cannon_wheel,(player2.position[0], player2.position[1]+10))  # 바퀴 이미지
 
         pygame.draw.rect(gameDisplay, RED, [player.body[0]-35, player.body[1]-120, player.gauge, 10])
-        # gameDisplay.blit(txt,(0,0))
-        # # gameDisplay.blit(txt_angle, (150, 0))
-        # gameDisplay.blit(txt_angle_1, (player1.body[0]-10, player1.body[1]-180))
-        # gameDisplay.blit(txt_angle_2, (player2.body[0]-10, player2.body[1]-180))
         gameDisplay.blit(txt_velocity, velocity_rect)
         
         # 풍향 표시
@@ -375,7 +384,6 @@ def game(player1, player2):
         # 체력 이미지 출력 파트
         temp_1 = (player1.hp-1)//20
         for i in range(5):
-            # gameDisplay.blit(player11.hp_img[i], (50* (i+1), 250))
             pos_x = 60 * (i+1)
             if i < temp_1:
                 gameDisplay.blit(img_hp[0], (pos_x, 100))
@@ -397,7 +405,6 @@ def game(player1, player2):
         
         temp_2 = (player2.hp-1)//20
         for i in range(5):
-            # gameDisplay.blit(player21.hp_img[i], (50* (i+1), 250))
             pos_x = 1220 - 60*(i+1)
             if i < temp_2:
                 gameDisplay.blit(img_hp[0], (pos_x, 100))
@@ -594,14 +601,14 @@ def client():
             client_sockets.append(client_socket)
             print("Client connected")
             print("참가자 수 : ", len(client_sockets))
+            print(f"참가자 : {client_sockets}")
             start_new_thread(handle_client, (client_socket, _))
+        
 
 def handle_client(client_socket, _):
     global client_sockets, tri_ready
-    # 게임 준비 --------------------------------------------------------
-    while tri_ready == 0 :
-        ...
-    
+    # 게임 준비 -------------------------------------------------------
+        
     client_socket.send("시작".encode('utf-8'))
     # 초기 세팅 값 클라이언트한테 전달하기
     
@@ -620,6 +627,27 @@ def handle_client(client_socket, _):
     if tri_ready == 3 :
         ... # 값들이 결과가 나온 값들을 다시 클라이언트들한테 HP 전달, 승패 전달
             # tri_ready = 1 
+
+def send_initial_data(client_socket, player):
+    
+    player_data = {
+        "initial_position":player.initial_position,
+        'position' : player.position,
+        "name" : player.name,
+        "damage" : player.damage,
+        "volume" : player.volume,
+        "side" : player.side,
+        "hp" : player.hp,
+        "gauge" : player.gauge,
+        "body" : player.body,
+        "angle" : player.angle,
+        "hp_img" : player.hp_img
+    }
+    data_json = json.dumps(player_data)
+    client_socket.send("시작".encode('utf-8'))
+    client_socket.send(data_json.encode('utf-8'))
+    
+
 # 실행 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 mainmenu_start = pygame.image.load("./img/start.png")

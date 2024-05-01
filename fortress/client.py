@@ -149,7 +149,7 @@ def explain():
             Button(left_button, 50, 350, 100, 100, left_button, 50, 350, switch)
             
         Button(back, 300, 600, 230, 140, back_click, 300, 600, intro)
-        Button(mainmenu_start, 700, 600, 230, 140, mainmenu_start_click, 700, 600, ready)
+        Button(mainmenu_start, 700, 600, 230, 140, mainmenu_start_click, 700, 600, client)
         
         pygame.display.update()
         clock.tick(15)
@@ -226,7 +226,7 @@ def ready():
         
         pygame.display.update()
         clock.tick(7)
-        
+    print('started')
     game() # 시작신호 받았을 경우 넘어감
     
 # player 1 선택
@@ -292,7 +292,6 @@ def game_over(win, defeated):
 # 게임 실행 함수
 def game():
     global turn, environment, player1, player2
-    print(player1.position, player2.position)
     
     # 시작하고 초기 환경 설정
     environment = Environment()
@@ -694,6 +693,7 @@ def client():
         # 딕셔너리 형태도 똑같이 진행
         received_list = pickle.loads(received_data) # 초기 setting 값 역직렬화
         print(received_list)
+    
 
 # 실행 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

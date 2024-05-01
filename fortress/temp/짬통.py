@@ -1,12 +1,5 @@
 import math
 
-class AA:
-    def __init__(self):
-        self.A = 5
-        self.plus()
-    
-    def plus(self):
-        self.A += 1
-
-temp = AA()
-print(temp.A)
+list1 = [27,26,26,26,25,25,20,22,21,26,11]
+print(sum(list1))
+print(len(list1))
